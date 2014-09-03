@@ -5,10 +5,34 @@
     pkg: python-pycurl
     state: present
 
+- name: nodejs | Add nodesource signing key
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state: present
+
 - name: nodejs | Add the nodejs repository
   apt_repository:
-    repo: ppa:chris-lea/node.js
+    repo: deb https://deb.nodesource.com/node {{ansible_distribution_release}} main
     state: present
+    validate_certs: yes
+
+- name: nodejs | Add the nodejs source repository
+  apt_repository:
+    repo: deb-src https://deb.nodesource.com/node {{ansible_distribution_release}} main
+    state: present
+    validate_certs: yes
+
+- name: nodejs | Add the nodejs development repository
+  apt_repository:
+    repo: deb https://deb.nodesource.com/node-devel {{ansible_distribution_release}} main
+    state: present
+    validate_certs: yes
+
+- name: nodejs | Add the nodejs source development repository
+  apt_repository:
+    repo: deb-src https://deb.nodesource.com/node-devel {{ansible_distribution_release}} main
+    state: present
+    validate_certs: yes
 
 - name: node.js | Install the node.js package
   apt:
